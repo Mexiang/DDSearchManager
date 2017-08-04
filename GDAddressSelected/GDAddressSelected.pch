@@ -1,0 +1,21 @@
+//
+//  GDAddressSelected.pch
+//  GDAddressSelected
+//
+//  Created by Dry on 2017/8/2.
+//  Copyright © 2017年 Dry. All rights reserved.
+//
+
+#ifndef GDAddressSelected_pch
+#define GDAddressSelected_pch
+
+
+#define ScreenWidth [UIScreen  mainScreen].bounds.size.width
+#define ScreenHeight [UIScreen mainScreen].bounds.size.height
+
+#define NavHeight 64
+
+
+
+
+#endif /* GDAddressSelected_pch */
