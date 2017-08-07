@@ -14,8 +14,9 @@
 
 @property (nonatomic, strong) AMapSearchAPI *searchAPI;
 
-@property (nonatomic, copy) keyWordSearchBlock keyWordSearchBlock;
-@property (nonatomic, copy) tipsSearchBlock tipSearchBlock;
+@property (nonatomic, copy) KeyWordSearchBlock keyWordSearchBlock;
+@property (nonatomic, copy) TipsSearchBlock    tipSearchBlock;
+@property (nonatomic, copy) DDPoisSearchBlock  ddPoisSearchBlock;
 
 @end
 
@@ -31,7 +32,7 @@
 }
 
 /// 关键字查询
-- (void)keyWordsSearch:(NSString *)keyword city:(NSString *)city returnBlock:(keyWordSearchBlock)block
+- (void)keyWordsSearch:(NSString *)keyword city:(NSString *)city returnBlock:(KeyWordSearchBlock)block
 {
     if (keyword.length) {
         
@@ -55,7 +56,8 @@
 }
 
 /// 输入提示查询
-- (void)inputTipsSearch:(NSString *)tips city:(NSString *)city returnBlock:(tipsSearchBlock)block {
+- (void)inputTipsSearch:(NSString *)tips city:(NSString *)city returnBlock:(TipsSearchBlock)block
+{
     if (tips.length) {
         
         self.tipSearchBlock = block;
@@ -70,6 +72,22 @@
         
         /*发起关键字搜索*/
         [self.searchAPI AMapInputTipsSearch:request];
+    }
+}
+
+///逆地理编码查询POI点
+- (void)poiReGeocode:(CLLocationCoordinate2D)coordinate returnBlock:(DDPoisSearchBlock)block
+{
+    if (coordinate.latitude > 0 && coordinate.longitude > 0)
+    {
+        self.ddPoisSearchBlock = block;
+        
+        //初始化逆地理编码请求类
+        AMapReGeocodeSearchRequest *request = [[AMapReGeocodeSearchRequest alloc]init];
+        request.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+        request.requireExtension = YES; //返回扩展信息
+        //发起逆地址编码查询
+        [self.searchAPI AMapReGoecodeSearch:request];
     }
 }
 
@@ -120,6 +138,28 @@
             }
         }
         self.tipSearchBlock (arr);
+    }
+}
+//逆地理编码查询附近POI回调
+- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+{
+    if (response && response.regeocode)
+    {
+        NSMutableArray *arr = [[NSMutableArray alloc] init];
+        
+        for (AMapPOI *mapPoi in response.regeocode.pois)
+        {
+            DDSearchPoi *poi = [[DDSearchPoi alloc] init];
+            poi.name = mapPoi.name;
+            poi.address = mapPoi.address;
+            poi.coordinate = CLLocationCoordinate2DMake(mapPoi.location.latitude, mapPoi.location.longitude);
+            poi.city = mapPoi.city;
+            poi.cityCode = mapPoi.citycode;
+            
+            [arr addObject:poi];
+        }
+        
+        self.ddPoisSearchBlock(arr);
     }
 }
 

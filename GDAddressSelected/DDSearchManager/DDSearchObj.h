@@ -47,3 +47,21 @@
 
 @end
 
+
+///POI点
+@interface DDSearchPoi : DDSearchObj;
+
+///名称
+@property (nonatomic, copy) NSString               *name;
+///地址
+@property (nonatomic, copy) NSString               *address;
+///经纬度
+@property (nonatomic      ) CLLocationCoordinate2D coordinate;
+///城市
+@property (nonatomic, copy) NSString *city;
+///城市编码
+@property (nonatomic, copy) NSString *cityCode;
+
+@end
+
+

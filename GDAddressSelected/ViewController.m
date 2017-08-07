@@ -23,6 +23,25 @@
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
+    
+    [[DDSearchManager sharedManager] keyWordsSearch:@"清华" city:@"北京" returnBlock:^(NSArray<__kindof DDSearchPointAnnotation *> *pointAnnotaions) {
+        
+        
+        for (DDSearchPointAnnotation *annotation in pointAnnotaions) {
+            NSLog(@"%@ %@ (%f,%f)",annotation.title,annotation.subtitle,annotation.coordinate.latitude,annotation.coordinate.longitude);
+        }
+
+    }];
+    
+    
+    
+    //逆地理编码，请求附近兴趣点数据
+    [[DDSearchManager sharedManager] poiReGeocode:CLLocationCoordinate2DMake(39.9087569028, 116.3973784447) returnBlock:^(NSArray<__kindof DDSearchPoi *> *pois) {
+        
+        for (DDSearchPoi *poi in pois) {
+            NSLog(@"%@ %@",poi.name,poi.address);
+        }
+    }];
 }
 
 

@@ -10,24 +10,19 @@
 
 @implementation DDSearchObj
 
-
-
 @end
-
-
 
 
 @implementation DDSearchPointAnnotation
 
-
-
 @end
-
-
 
 
 @implementation DDSearchTip
 
+@end
 
+
+@implementation DDSearchPoi
 
 @end
