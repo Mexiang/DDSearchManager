@@ -23,6 +23,8 @@
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     
+    //用之前别忘了配置boundle id和高德AppKey
+    
     
     [[DDSearchManager sharedManager] keyWordsSearch:@"清华" city:@"北京" returnBlock:^(NSArray<__kindof DDSearchPointAnnotation *> *pointAnnotaions) {
         
